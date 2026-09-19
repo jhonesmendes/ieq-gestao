@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { Camera, Check, RotateCcw, X } from 'lucide-react'
+import { Camera, Check, Plus, RotateCcw, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { iniciais } from '@/lib/formatadores'
 
@@ -244,24 +244,27 @@ export function AbaPresenca({ celulaId, data }: { celulaId: string; data: string
               </li>
             ))}
           </ul>
-
-          {membros.length > 0 && (
-            <div className="border-border mt-4 border-t pt-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Nome do visitante"
-                  value={nomeVisitanteNovo}
-                  onChange={(e) => setNomeVisitanteNovo(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && adicionarVisitanteNovo()}
-                />
-                <Button type="button" variant="secondary" onClick={adicionarVisitanteNovo}>
-                  + Visitante
-                </Button>
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
+
+      {membros.length > 0 && (
+        <Card className="lg:col-span-2">
+          <CardContent>
+            <h3 className="text-text-primary mb-3 text-sm font-semibold">➕ Registrar visitante de hoje</h3>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Nome do visitante"
+                value={nomeVisitanteNovo}
+                onChange={(e) => setNomeVisitanteNovo(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && adicionarVisitanteNovo()}
+              />
+              <Button type="button" onClick={adicionarVisitanteNovo} className="flex-shrink-0">
+                <Plus className="mr-1 h-4 w-4" /> Adicionar visitante
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Coluna lateral: resumo, observações e foto */}
       <div className="flex flex-col gap-5">

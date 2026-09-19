@@ -124,9 +124,20 @@ class MembroController extends Controller
         return response()->json(['status' => 'sucesso', 'dados' => $this->apresentar($membro)]);
     }
 
-    public function destroy(Membro $membro)
+    /**
+     * "Excluir" aqui é remover o membro desta célula, não apagar a pessoa
+     * do sistema — um delete físico falharia de qualquer forma por causa
+     * do histórico de presença (FK de presencas.membro_id), e apagar esse
+     * histórico junto não é o que se quer. Some da lista da célula mas o
+     * cadastro (usuário + presenças antigas) continua intacto.
+     */
+    public function destroy(Request $request, Membro $membro)
     {
-        $membro->delete();
+        /** @var Usuario $usuarioLogado */
+        $usuarioLogado = $request->user();
+        $this->garantirPermissaoNaCelula($usuarioLogado, $membro->celula_id);
+
+        $membro->update(['celula_id' => null, 'status' => 'inativo']);
 
         return response()->json(['status' => 'sucesso']);
     }
