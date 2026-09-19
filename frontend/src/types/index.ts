@@ -69,6 +69,7 @@ export interface Igreja {
 
 export interface Evento {
   id: number
+  celula_id: number | null
   nome: string
   descricao: string | null
   data_evento: string

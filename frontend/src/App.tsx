@@ -10,6 +10,7 @@ import { EventosPage } from '@/pages/eventos-page'
 import { CursosPage } from '@/pages/cursos-page'
 import { IgrejasPage } from '@/pages/igrejas-page'
 import { IgrejaAppPage } from '@/pages/igreja-app-page'
+import { CelulaEventosPage } from '@/pages/celula-eventos-page'
 import { UsuariosPage } from '@/pages/usuarios-page'
 import { AprovacaoCadastrosPage } from '@/pages/aprovacao-cadastros-page'
 import { ConfiguracoesPage } from '@/pages/configuracoes-page'
@@ -45,7 +46,11 @@ export default function App() {
             {/* App simplificado do líder — mesma tela de Presença, abrindo
                 em abas diferentes por padrão conforme o item do menu. */}
             <Route path="/app/membros" element={<PresencaPage abaInicial="membros" />} />
-            <Route path="/app/reunioes" element={<PresencaPage abaInicial="galeria" />} />
+            {/* Galeria de fotos + agenda da igreja continuam acessíveis
+                dentro de Presença & Célula (aba Galeria), só não têm mais
+                atalho direto no menu — o menu agora abre a agenda própria
+                da célula. */}
+            <Route path="/app/eventos" element={<CelulaEventosPage />} />
             <Route path="/app/perfil" element={<PerfilPage />} />
 
             {/* App simplificado do gestor da igreja — reaproveita as abas

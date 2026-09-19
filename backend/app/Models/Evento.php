@@ -12,7 +12,7 @@ class Evento extends Model
     const UPDATED_AT = null;
 
     protected $fillable = [
-        'nome', 'descricao', 'data_evento', 'localizacao', 'responsavel_id', 'tipo', 'vagas',
+        'celula_id', 'nome', 'descricao', 'data_evento', 'localizacao', 'responsavel_id', 'tipo', 'vagas',
     ];
 
     protected function casts(): array
@@ -23,5 +23,10 @@ class Evento extends Model
     public function responsavel()
     {
         return $this->belongsTo(Usuario::class, 'responsavel_id');
+    }
+
+    public function celula()
+    {
+        return $this->belongsTo(Celula::class, 'celula_id');
     }
 }

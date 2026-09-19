@@ -13,7 +13,7 @@ import { Home, Users, Calendar, User, CheckSquare } from 'lucide-react'
 const ABAS_LIDER = [
   { to: '/dashboard', label: 'Início', icon: Home },
   { to: '/app/membros', label: 'Membros', icon: Users },
-  { to: '/app/reunioes', label: 'Reuniões', icon: Calendar },
+  { to: '/app/eventos', label: 'Eventos', icon: Calendar },
   { to: '/app/perfil', label: 'Perfil', icon: User },
 ]
 
