@@ -29,8 +29,6 @@ export function PresencaPage({ abaInicial = 'presenca' }: { abaInicial?: AbaId }
   const [celulaId, setCelulaId] = useState('')
   const [data, setData] = useState(hoje())
 
-  const igrejaId = celulas.find((c) => String(c.id) === celulaId)?.igreja_id ?? null
-
   useEffect(() => {
     api.get<RespostaApi<Celula[]>>('/celulas').then(({ data }) => {
       const lista = data.dados ?? []
@@ -90,7 +88,7 @@ export function PresencaPage({ abaInicial = 'presenca' }: { abaInicial?: AbaId }
             <AbaVisitantes celulaId={celulaId} />
           </TabsContent>
           <TabsContent value="galeria">
-            <AbaGaleria celulaId={celulaId} igrejaId={igrejaId} />
+            <AbaGaleria celulaId={celulaId} />
           </TabsContent>
         </Tabs>
       )}

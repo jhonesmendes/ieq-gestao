@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
 import { api, type RespostaApi } from '@/lib/api'
-import type { EventoIgreja, ReuniaoCelula } from '@/types'
+import type { ReuniaoCelula } from '@/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { Calendar, Image as ImageIcon } from 'lucide-react'
+import { Image as ImageIcon } from 'lucide-react'
 import { formatarDataLocal } from '@/lib/formatadores'
 
-export function AbaGaleria({ celulaId, igrejaId }: { celulaId: string; igrejaId: number | null }) {
+export function AbaGaleria({ celulaId }: { celulaId: string }) {
   const [reunioes, setReunioes] = useState<ReuniaoCelula[]>([])
   const [carregando, setCarregando] = useState(true)
-  const [proximosEventos, setProximosEventos] = useState<EventoIgreja[]>([])
 
   useEffect(() => {
     setCarregando(true)
@@ -20,49 +19,10 @@ export function AbaGaleria({ celulaId, igrejaId }: { celulaId: string; igrejaId:
       .finally(() => setCarregando(false))
   }, [celulaId])
 
-  useEffect(() => {
-    if (!igrejaId) {
-      setProximosEventos([])
-      return
-    }
-    api
-      .get<RespostaApi<EventoIgreja[]>>('/igrejas-eventos/proximos', { params: { igreja_id: igrejaId, limite: 5 } })
-      .then(({ data }) => setProximosEventos(data.dados ?? []))
-      .catch(() => {})
-  }, [igrejaId])
-
   return (
-    <div className="flex flex-col gap-5">
-      {/* Agenda — próximos eventos da igreja à qual esta célula pertence,
-          cadastrados por quem gerencia a igreja (pastor/gestor_igreja). */}
-      <Card>
-        <CardContent>
-          <h3 className="text-text-primary mb-4 text-sm font-semibold">📅 Próximos eventos</h3>
-          {proximosEventos.length === 0 && (
-            <p className="text-text-muted py-6 text-center text-sm">Nenhum evento agendado no momento.</p>
-          )}
-          <ul className="flex flex-col gap-2.5">
-            {proximosEventos.map((e) => (
-              <li key={e.id} className="flex items-center gap-3">
-                <span className="bg-amber-light text-amber flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full">
-                  <Calendar className="h-4 w-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-text-primary truncate text-sm font-medium">{e.nome}</p>
-                  <p className="text-text-muted truncate text-xs">
-                    {formatarDataLocal(e.data_evento)}
-                    {e.localizacao ? ` · ${e.localizacao}` : ''}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent>
-          <h3 className="text-text-primary mb-4 text-sm font-semibold">Reuniões anteriores ({reunioes.length})</h3>
+    <Card>
+      <CardContent>
+        <h3 className="text-text-primary mb-4 text-sm font-semibold">Reuniões anteriores ({reunioes.length})</h3>
 
         {carregando && <p className="text-text-muted py-10 text-center text-sm">Carregando…</p>}
         {!carregando && reunioes.length === 0 && (
@@ -89,8 +49,7 @@ export function AbaGaleria({ celulaId, igrejaId }: { celulaId: string; igrejaId:
             </div>
           ))}
         </div>
-        </CardContent>
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
