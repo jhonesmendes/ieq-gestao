@@ -1,0 +1,6 @@
+# Ferramentas de instalação locais, não fazem parte do projeto.
+composer.phar
+composer-setup.php
+
+# Pacotes de deploy manual (gerados sob demanda, nunca versionados).
+*.tar.gz
