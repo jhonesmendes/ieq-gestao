@@ -23,13 +23,13 @@ export function ProtectedRoute() {
   return ehAppSimplificado ? <SimpleAppLayout /> : <AdminLayout />
 }
 
-/** Tela inicial por papel — líder/líder_treinamento caem em Presença, gestor_igreja
- * na própria Igreja, e todo o resto no Dashboard administrativo. */
+/** Tela inicial por papel — gestor_igreja cai na própria Igreja, todo o
+ * resto (inclusive líder, com dados já escopados na própria célula pelo
+ * backend) cai no Dashboard. */
 export function useRotaInicial() {
   const { usuario } = useAuth()
 
   if (usuario?.funcao === 'gestor_igreja') return '/app/igreja/inicio'
-  if (usuario?.funcao === 'lider' || usuario?.funcao === 'lider_treinamento') return '/presenca'
 
   return '/dashboard'
 }

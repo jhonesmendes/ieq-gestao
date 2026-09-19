@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/context/auth-context'
 import { api, type RespostaApi } from '@/lib/api'
 import type { DashboardDados } from '@/types'
 import { PageHeader } from '@/components/shared/page-header'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { iniciais, formatarDataLocal } from '@/lib/formatadores'
-import { Users, Home, TrendingUp, Star, Calendar } from 'lucide-react'
+import { Users, Home, TrendingUp, Star, Calendar, CheckSquare } from 'lucide-react'
 
 function saudacao() {
   const h = new Date().getHours()
@@ -26,9 +28,19 @@ export function DashboardPage() {
       .finally(() => setCarregando(false))
   }, [])
 
+  const ehLider = usuario?.funcao === 'lider' || usuario?.funcao === 'lider_treinamento'
+
   return (
     <div>
       <PageHeader titulo="Dashboard" subtitulo={`${saudacao()}, ${usuario?.nome ?? ''}`} />
+
+      {ehLider && (
+        <Link to="/presenca" className="mb-6 block">
+          <Button className="w-full py-6 text-base font-bold">
+            <CheckSquare className="mr-1 h-4 w-4" /> Lançar presença de hoje
+          </Button>
+        </Link>
+      )}
 
       {carregando && <p className="text-text-muted text-sm">Carregando…</p>}
 
