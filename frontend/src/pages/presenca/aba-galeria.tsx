@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { api, type RespostaApi } from '@/lib/api'
-import type { Evento, ReuniaoCelula } from '@/types'
+import type { EventoIgreja, ReuniaoCelula } from '@/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { toast } from 'sonner'
 import { Calendar, Image as ImageIcon } from 'lucide-react'
 import { formatarDataLocal } from '@/lib/formatadores'
 
-export function AbaGaleria({ celulaId }: { celulaId: string }) {
+export function AbaGaleria({ celulaId, igrejaId }: { celulaId: string; igrejaId: number | null }) {
   const [reunioes, setReunioes] = useState<ReuniaoCelula[]>([])
   const [carregando, setCarregando] = useState(true)
-  const [proximosEventos, setProximosEventos] = useState<Evento[]>([])
+  const [proximosEventos, setProximosEventos] = useState<EventoIgreja[]>([])
 
   useEffect(() => {
     setCarregando(true)
@@ -18,16 +18,23 @@ export function AbaGaleria({ celulaId }: { celulaId: string }) {
       .then(({ data }) => setReunioes(data.dados ?? []))
       .catch(() => toast.error('Não foi possível carregar a galeria.'))
       .finally(() => setCarregando(false))
+  }, [celulaId])
 
+  useEffect(() => {
+    if (!igrejaId) {
+      setProximosEventos([])
+      return
+    }
     api
-      .get<RespostaApi<Evento[]>>('/eventos/proximos', { params: { limite: 5 } })
+      .get<RespostaApi<EventoIgreja[]>>('/igrejas-eventos/proximos', { params: { igreja_id: igrejaId, limite: 5 } })
       .then(({ data }) => setProximosEventos(data.dados ?? []))
       .catch(() => {})
-  }, [celulaId])
+  }, [igrejaId])
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Agenda — próximos eventos da igreja, cadastrados por admin/pastor. */}
+      {/* Agenda — próximos eventos da igreja à qual esta célula pertence,
+          cadastrados por quem gerencia a igreja (pastor/gestor_igreja). */}
       <Card>
         <CardContent>
           <h3 className="text-text-primary mb-4 text-sm font-semibold">📅 Próximos eventos</h3>

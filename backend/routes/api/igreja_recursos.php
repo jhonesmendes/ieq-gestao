@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 // gated por Usuario::podeGerenciarIgreja() dentro do controller base
 // (App\Http\Controllers\Api\Concerns\IgrejaRecursoController).
 Route::middleware('auth:sanctum')->group(function () {
+    // Leitura livre da agenda — precisa vir antes de index() no registro de
+    // rotas por ser mais específica, embora aqui não haja conflito de path.
+    Route::get('/igrejas-eventos/proximos', [EventoIgrejaController::class, 'proximos']);
     Route::get('/igrejas-eventos', [EventoIgrejaController::class, 'index']);
     Route::post('/igrejas-eventos', [EventoIgrejaController::class, 'store']);
     Route::delete('/igrejas-eventos/{id}', [EventoIgrejaController::class, 'destroy']);
